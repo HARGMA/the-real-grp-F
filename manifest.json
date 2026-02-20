@@ -2,14 +2,14 @@
   "name": "مجموعة الفراشات - إدارة الطلاب",
   "short_name": "الفراشات",
   "description": "نظام إدارة الطلاب والحضور - يعمل بدون إنترنت",
-  "start_url": "/index.html",
+  "start_url": "./index.html",
+  "scope": "./",
   "display": "standalone",
   "background_color": "#6366F1",
   "theme_color": "#6366F1",
   "orientation": "portrait-primary",
   "dir": "rtl",
   "lang": "ar-TN",
-  "scope": "/",
   "icons": [
     {
       "src": "icons/icon-72.png",
@@ -66,7 +66,7 @@
       "name": "إضافة طالب",
       "short_name": "إضافة",
       "description": "إضافة طالب جديد",
-      "url": "/ajout.html",
+      "url": "./ajout.html",
       "icons": [
         {
           "src": "icons/icon-96.png",
@@ -78,7 +78,7 @@
       "name": "تحضير الغيابات",
       "short_name": "تحضير",
       "description": "تسجيل حضور الطلاب",
-      "url": "/marq_absence.html",
+      "url": "./marq_absence.html",
       "icons": [
         {
           "src": "icons/icon-96.png",
