@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>حذف طالب</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="form-container">
+        <h1>🗑️ حذف طالب</h1>
+        
+        <fieldset>
+            <legend>اختيار المجموعة</legend>
+            <form id="selectGroupForm">
+                <table class="form-table">
+                    <tr>
+                        <td>
+                            <label for="groupe">المجموعة <span class="required">*</span></label>
+                            <select name="groupe" id="groupe" required>
+                                <option value="">-- اختر مجموعة --</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <input type="submit" value="✓ عرض الطلاب">
+                        </td>
+                    </tr>
+                </table>
+            </form>
+        </fieldset>
+        
+        <div id="studentsList"></div>
+        
+        <div class="text-center mt-3">
+            <a href="choix.html" class="btn btn-secondary">← العودة للقائمة</a>
+        </div>
+    </div>
+    
+    <script src="js/db.js"></script>
+    <script src="js/app.js"></script>
+    <script>
+        window.addEventListener('DOMContentLoaded', async () => {
+            await kayel.loadGroups('groupe');
+        });
+        
+        document.getElementById('selectGroupForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const groupId = document.getElementById('groupe').value;
+            if (!groupId) {
+                kayel.showErrorMessage('الرجاء اختيار مجموعة');
+                return;
+            }
+            
+            try {
+                const students = await db.getStudentsByGroup(parseInt(groupId));
+                const group = await db.getGroup(parseInt(groupId));
+                
+                if (students.length === 0) {
+                    document.getElementById('studentsList').innerHTML = `
+                        <div class='error-message'>❌ لا يوجد طلاب في هذه المجموعة</div>
+                    `;
+                    return;
+                }
+                
+                document.getElementById('studentsList').innerHTML = `
+                    <h3 style='color: var(--primary); text-align: center; margin: 1.5rem 0;'>المجموعة: ${group.name}</h3>
+                    <form id="deleteForm">
+                        <table style='width: 100%;'>
+                            <thead>
+                                <tr>
+                                    <th>حذف</th>
+                                    <th>الحصة</th>
+                                    <th>اسم الطالب</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                ${students.map(s => `
+                                    <tr>
+                                        <td style='text-align: center;'>
+                                            <input type='checkbox' name='student_${s.id}' value='${s.id}' style='width: 24px; height: 24px;'>
+                                        </td>
+                                        <td style='text-align: center;'>${s.seance}</td>
+                                        <td>${s.name}</td>
+                                    </tr>
+                                `).join('')}
+                            </tbody>
+                        </table>
+                        <div class='text-center mt-3'>
+                            <input type='submit' value='🗑️ حذف المحدد' style='background: var(--gradient-danger);'>
+                        </div>
+                    </form>
+                `;
+                
+                document.getElementById('deleteForm').addEventListener('submit', async (e) => {
+                    e.preventDefault();
+                    const success = await kayel.deleteSelectedStudents(groupId);
+                    if (success) {
+                        document.getElementById('selectGroupForm').dispatchEvent(new Event('submit'));
+                    }
+                });
+                
+            } catch (error) {
+                kayel.showErrorMessage('فشل في تحميل الطلاب');
+                console.error(error);
+            }
+        });
+    </script>
+</body>
+</html>

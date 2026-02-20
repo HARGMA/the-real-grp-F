@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>القائمة الرئيسية</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="menu-container">
+        <h2>📋 القائمة الرئيسية</h2>
+        <table class="menu-table">
+            <tr>
+                <td colspan="3">
+                    <a href="marq_absence.html" target="f1">
+                        ✅ تحضير الغيابات
+                    </a>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <a href="ajout.html" target="f1">
+                        ➕ إضافة تلميذ
+                    </a>
+                </td>
+                <td style="width: 80px;">
+                    <a href="sup-elv.html" target="f1" style="background: var(--gradient-danger); padding: 1.25rem 0.75rem;">
+                        🗑️
+                    </a>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <a href="creer_groupe.html" target="f1">
+                        👥 إنشاء مجموعة
+                    </a>
+                </td>
+                <td style="width: 80px;">
+                    <a href="sup-grp.html" target="f1" style="background: var(--gradient-danger); padding: 1.25rem 0.75rem;">
+                        🗑️
+                    </a>
+                </td>
+            </tr>
+        </table>
+        
+        <div style="margin-top: 2rem; padding: 1rem; background: var(--gray-100); border-radius: var(--radius-lg); text-align: center;">
+            <p style="margin-bottom: 0.5rem; color: var(--gray-700);">💾 إدارة البيانات</p>
+            <button onclick="kayel.exportAllData()" class="btn btn-secondary" style="width: 100%; margin-bottom: 0.5rem;">
+                تصدير نسخة احتياطية
+            </button>
+            <label class="btn btn-secondary" style="width: 100%; cursor: pointer; display: block;">
+                استيراد بيانات
+                <input type="file" id="importFile" accept=".json" style="display: none;" onchange="handleImport(this)">
+            </label>
+        </div>
+    </div>
+    
+    <script src="js/db.js"></script>
+    <script src="js/app.js"></script>
+    <script>
+        function handleImport(input) {
+            if (input.files && input.files[0]) {
+                if (confirm('⚠️ هل تريد استيراد البيانات؟ سيتم استبدال البيانات الحالية!')) {
+                    kayel.importDataFromFile(input.files[0]);
+                }
+            }
+        }
+    </script>
+</body>
+</html>

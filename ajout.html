@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>إضافة تلميذ</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="form-container">
+        <h1>➕ إضافة تلميذ</h1>
+        
+        <div id="messageContainer"></div>
+        
+        <fieldset>
+            <legend>معلومات التلميذ</legend>
+            <form id="addStudentForm">
+                <table class="form-table">
+                    <tr>
+                        <td>
+                            <label for="nom">اسم التلميذ <span class="required">*</span></label>
+                            <input type="text" name="nom" id="nom" placeholder="أدخل الاسم الكامل" required maxlength="100" autocomplete="name">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label for="grp">المجموعة <span class="required">*</span></label>
+                            <select name="grp" id="grp" required>
+                                <option value="">-- اختر مجموعة --</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label for="seance">رقم الحصة <span class="required">*</span></label>
+                            <input type="number" name="seance" id="seance" min="1" max="100" value="1" required>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="padding-top: 1.5rem;">
+                            <input type="submit" value="✓ إضافة">
+                            <input type="reset" value="↺ إعادة تعيين">
+                        </td>
+                    </tr>
+                </table>
+            </form>
+        </fieldset>
+        
+        <div style="margin-top: 1rem; text-align: center; color: var(--gray-600); font-size: 0.9rem;">
+            <small>الحقول المميزة بـ <span class="required">*</span> إلزامية</small>
+        </div>
+    </div>
+    
+    <script src="js/db.js"></script>
+    <script src="js/app.js"></script>
+    <script>
+        // Load groups on page load
+        window.addEventListener('DOMContentLoaded', async () => {
+            await kayel.loadGroups('grp');
+        });
+        
+        // Handle form submission
+        document.getElementById('addStudentForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const nom = document.getElementById('nom').value.trim();
+            const grp = parseInt(document.getElementById('grp').value);
+            const seance = parseInt(document.getElementById('seance').value);
+            
+            if (!nom || nom.length < 2) {
+                kayel.showErrorMessage('اسم التلميذ غير صحيح (2-100 حرف)');
+                return;
+            }
+            
+            if (!grp) {
+                kayel.showErrorMessage('الرجاء اختيار مجموعة');
+                return;
+            }
+            
+            const success = await kayel.addStudent(nom, grp, seance);
+            
+            if (success) {
+                document.getElementById('addStudentForm').reset();
+                document.getElementById('seance').value = '1';
+            }
+        });
+    </script>
+</body>
+</html>

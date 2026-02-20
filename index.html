@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+    <meta name="description" content="نظام إدارة الطلاب - مجموعة الفراشات">
+    <meta name="theme-color" content="#6366F1">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="الفراشات">
+    
+    <title>مجموعة الفراشات - إدارة الطلاب</title>
+    
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="manifest.json">
+    
+    <!-- Favicon & App Icons -->
+    <link rel="icon" type="image/png" sizes="32x32" href="icons/icon-72.png">
+    <link rel="apple-touch-icon" href="icons/icon-192.png">
+    
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header onclick="window.location.reload();">
+        <div class="header-content">
+            <img src="farachat.jpeg" alt="شعار مجموعة الفراشات">
+            <h1>مجموعة الفراشات</h1>
+        </div>
+    </header>
+    
+    <main>
+        <h2>نظام إدارة الطلاب</h2>
+        <iframe name="f1" src="choix.html" title="القائمة الرئيسية"></iframe>
+    </main>
+    
+    <!-- Install Prompt -->
+    <div id="installPrompt" class="install-prompt" style="display: none;">
+        <div class="install-content">
+            <h3>📱 تثبيت التطبيق</h3>
+            <p>قم بتثبيت التطبيق للوصول السريع والعمل بدون إنترنت!</p>
+            <button id="installButton" class="btn btn-primary">✓ تثبيت الآن</button>
+            <button id="closeInstall" class="btn btn-secondary">× إغلاق</button>
+        </div>
+    </div>
+    
+    <footer>
+        <h2>© تم التطوير بواسطة @tdol_3la_0.25 | PWA Version</h2>
+        <p style="font-size: 0.8rem; margin-top: 0.5rem;">
+            <span id="onlineStatus">🟢 متصل</span> | 
+            <button onclick="kayel.exportAllData()" class="btn" style="display: inline-block; padding: 0.5rem 1rem; margin: 0.5rem;">💾 نسخ احتياطي</button>
+        </p>
+    </footer>
+    
+    <!-- Scripts -->
+    <script src="js/db.js"></script>
+    <script src="js/app.js"></script>
+    <script>
+        // Register Service Worker
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', async () => {
+                try {
+                    const registration = await navigator.serviceWorker.register('/service-worker.js');
+                    console.log('✅ Service Worker registered:', registration.scope);
+                    
+                    // Check for updates
+                    registration.addEventListener('updatefound', () => {
+                        console.log('🔄 New version available!');
+                    });
+                } catch (error) {
+                    console.error('❌ Service Worker registration failed:', error);
+                }
+            });
+        }
+        
+        // Install prompt
+        let deferredPrompt;
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+            document.getElementById('installPrompt').style.display = 'block';
+        });
+        
+        document.getElementById('installButton')?.addEventListener('click', async () => {
+            if (deferredPrompt) {
+                deferredPrompt.prompt();
+                const { outcome } = await deferredPrompt.userChoice;
+                console.log('Install outcome:', outcome);
+                deferredPrompt = null;
+                document.getElementById('installPrompt').style.display = 'none';
+            }
+        });
+        
+        document.getElementById('closeInstall')?.addEventListener('click', () => {
+            document.getElementById('installPrompt').style.display = 'none';
+        });
+        
+        // Online/Offline status
+        function updateOnlineStatus() {
+            const status = document.getElementById('onlineStatus');
+            if (navigator.onLine) {
+                status.textContent = '🟢 متصل';
+                status.style.color = 'var(--success)';
+            } else {
+                status.textContent = '🔴 غير متصل';
+                status.style.color = 'var(--danger)';
+            }
+        }
+        
+        window.addEventListener('online', updateOnlineStatus);
+        window.addEventListener('offline', updateOnlineStatus);
+        updateOnlineStatus();
+    </script>
+</body>
+</html>
