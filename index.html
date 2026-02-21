@@ -26,12 +26,17 @@
     <header onclick="window.location.reload();">
         <div class="header-content">
             <img src="farachat.jpeg" alt="شعار مجموعة الفراشات">
-            <h1>مجموعة الفراشات</h1>
+            <h1>groupe الفراشات</h1>
         </div>
     </header>
     
     <main>
-        <h2>نظام إدارة الطلاب</h2>
+        <h2 id="gor3a">Hallo!</h2>
+        <script lang="javascript">
+            let zhar = document.getElementById("gor3a");
+            const toutou=["Hallo!","!labes","??こんにちは",":)","sa7a el chorba","أستغفر اللّه ❤️","صلِّ على الحبيب ❤️","..."];
+            zhar.innerHTML=toutou[Math.trunc(Math.random()*7)];
+        </script>
         <iframe name="f1" src="choix.html" title="القائمة الرئيسية"></iframe>
     </main>
     
@@ -39,14 +44,14 @@
     <div id="installPrompt" class="install-prompt" style="display: none;">
         <div class="install-content">
             <h3>📱 تثبيت التطبيق</h3>
-            <p>قم بتثبيت التطبيق للوصول السريع والعمل بدون إنترنت!</p>
+            <p>تنجم تصب ال app و تستعماه بلاش internett !</p>
             <button id="installButton" class="btn btn-primary">✓ تثبيت الآن</button>
             <button id="closeInstall" class="btn btn-secondary">× إغلاق</button>
         </div>
     </div>
     
     <footer>
-        <h2>© made by Mr @tdol_3la_0.25 :P | PWA Version</h2>
+        <h2>© made by si @tdol_3la_0.25 :P | PWA Version</h2>
         <p style="font-size: 0.8rem; margin-top: 0.5rem;">
             <span id="onlineStatus">🟢 متصل</span> | 
             <button onclick="kayel.exportAllData()" class="btn" style="display: inline-block; padding: 0.5rem 1rem; margin: 0.5rem;">💾 نسخ احتياطي</button>
