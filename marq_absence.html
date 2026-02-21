@@ -8,7 +8,7 @@
 </head>
 <body>
     <div class="form-container">
-        <h1>✅ تحضير الغيابات</h1>
+        <h1>✅ تسجيل الغيابات</h1>
         
         <fieldset>
             <legend>اختيار المجموعة</legend>
@@ -71,10 +71,10 @@
                         <table style='width: 100%; margin-top: 1.5rem;'>
                             <thead>
                                 <tr>
-                                    <th>دفع</th>
-                                    <th>حاضر</th>
+                                    <th>خلّص</th>
+                                    <th>غايب</th>
                                     <th>الحصة</th>
-                                    <th>اسم الطالب</th>
+                                    <th>الإسمw</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -94,7 +94,7 @@
                         </table>
                         <input type="hidden" name="groupId" value="${groupId}">
                         <div class='text-center mt-3'>
-                            <input type='submit' value='✓ حفظ التحضير'>
+                            <input type='submit' value='✓ تسجيل الحضور'>
                         </div>
                     </form>
                 `;
@@ -102,7 +102,7 @@
                 document.getElementById('attendanceForm').addEventListener('submit', async (e) => {
                     e.preventDefault();
                     const result = await kayel.processAttendance(groupId);
-                    kayel.showSuccessMessage(`تم حفظ التحضير!<br>الطلاب: ${result.total}<br>الغيابات: ${result.absent}<br>المدفوعات: ${result.payment}`);
+                    kayel.showSuccessMessage(`تم حفظ الغيابات!<br>الطلاب: ${result.total}<br>الغيابات: ${result.absent}<br>المدفوعات: ${result.payment}`);
                     document.getElementById('selectGroupForm').dispatchEvent(new Event('submit'));
                 });
                 
